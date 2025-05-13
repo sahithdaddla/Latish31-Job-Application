@@ -1,0 +1,1856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Application Portal - Candidate</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --primary-light: #7289da;
+            --primary-dark: #3a0ca3;
+            --secondary-color: #4cc9f0;
+            --success-color: #4ade80;
+            --warning-color: #ffd166;
+            --danger-color: #ef476f;
+            --light-bg: #f8f9fa;
+            --dark-text: #2b2d42;
+            --medium-text: #6c757d;
+            --light-text: #f8f9fa;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            --hover-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            --border-radius: 10px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            color: var(--dark-text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 10px auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 0px;
+            animation: fadeInDown 0.8s ease;
+            background-color: blue;
+            border-top-right-radius: var(--border-radius);
+            border-top-left-radius: var(--border-radius);
+            padding: 20px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 0px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 2px;
+        }
+
+        .header p {
+            color: var(--medium-text);
+            font-size: 1.1rem;
+        }
+
+        .progress-container {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 0px;
+          position: relative;
+          max-width: 1000px;
+          margin-left: auto;
+          margin-right: auto;
+          background-color: rgb(248, 255, 246);
+          padding: 30px;
+          overflow: hidden;
+          box-sizing: border-box;
+        }
+
+        .progress-container::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            height: 4px;
+            width: 100%;
+            background-color: #e0e0e0;
+            z-index: 1;
+        }
+
+        .progress-bar {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            z-index: 2;
+            transition: width 0.4s ease;
+            width: 0;
+        }
+
+        .step-item {
+            z-index: 3;
+            position: relative;
+            text-align: center;
+            width: 40px;
+            height: 40px;
+        }
+
+        .step-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: white;
+            border: 3px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #e0e0e0;
+            font-size: 1.2rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .step-item.active .step-icon {
+            border-color: var(--primary-color);
+            background-color: var(--primary-color);
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(67, 97, 238, 0.5);
+        }
+
+        .step-item.completed .step-icon {
+            border-color: var(--success-color);
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .step-text {
+            position: absolute;
+            top: 45px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--medium-text);
+            font-size: 0.8rem;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .step-item.active .step-text {
+            opacity: 1;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .step {
+            display: none;
+            background-color: white;
+            padding: 30px;
+            border-bottom-right-radius: var(--border-radius);
+            border-bottom-left-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .step.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .step h2 {
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .step h2 i {
+            margin-right: 10px;
+            color: var(--primary-light);
+        }
+
+        .job-cards {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            flex: 1 1 250px;
+            padding: 25px;
+            background-color: #fff;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            transform: translateY(-100%);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .card:hover::before {
+            transform: translateY(0);
+        }
+
+        .card.selected {
+            border-color: var(--primary-color);
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+
+        .card h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .card p {
+            color: var(--medium-text);
+        }
+
+        .card i {
+            font-size: 2.5rem;
+            color: var(--primary-light);
+            margin-bottom: 15px;
+            transition: var(--transition);
+        }
+
+        .card:hover i {
+            transform: scale(1.1);
+            color: var(--primary-color);
+        }
+
+        .location-selector {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .location-option {
+            flex: 1 1 200px;
+            padding: 20px;
+            text-align: center;
+            border: 2px solid #f0f0f0;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .location-option i {
+            font-size: 2rem;
+            color: var(--primary-light);
+            margin-bottom: 10px;
+            transition: var(--transition);
+        }
+
+        .location-option:hover {
+            border-color: var(--secondary-color);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .location-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.1), rgba(76, 201, 240, 0.1));
+            transform: translateY(100%);
+            transition: var(--transition);
+            z-index: -1;
+        }
+
+        .location-option:hover::before {
+            transform: translateY(0);
+        }
+
+        .location-option.selected {
+            background-color: rgba(67, 97, 238, 0.05);
+            border-color: var(--primary-color);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .location-option.selected i {
+            color: var(--primary-color);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark-text);
+            transition: var(--transition);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: var(--border-radius);
+            box-sizing: border-box;
+            transition: var(--transition);
+            font-size: 1rem;
+            color: var(--dark-text);
+            background-color: #fff;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+            outline: none;
+        }
+
+        input.invalid {
+            border-color: var(--danger-color);
+            background-color: rgba(239, 71, 111, 0.05);
+        }
+
+        input.invalid:focus {
+            box-shadow: 0 0 0 3px rgba(239, 71, 111, 0.2);
+        }
+
+        .form-group i {
+            position: absolute;
+            right: 15px;
+            top: 47px;
+            color: var(--medium-text);
+        }
+
+        .error-message {
+            color: var(--danger-color);
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+            animation: fadeIn 0.3s ease;
+            font-weight: 500;
+        }
+
+        .error-message.visible {
+            display: block;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        button {
+            padding: 12px 25px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
+        }
+
+        button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background-color: #c0c0c0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        button i {
+            margin-right: 8px;
+        }
+
+        button.back {
+            background-color: #f8f9fa;
+            color: var(--medium-text);
+            border: 2px solid #e0e0e0;
+        }
+
+        button.back:hover {
+            background-color: #e9ecef;
+            color: var(--dark-text);
+        }
+
+        button.submit {
+            background-color: var(--success-color);
+        }
+
+        button.submit:hover {
+            background-color: #3cad6e;
+        }
+
+        .file-upload {
+            margin-bottom: 25px;
+        }
+
+        .file-upload-input {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            height: 120px;
+            border: 2px dashed #e0e0e0;
+            border-radius: var(--border-radius);
+            text-align: center;
+            transition: var(--transition);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #f9f9fb;
+        }
+
+        .file-upload-input:hover {
+            border-color: var(--primary-light);
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+
+        .file-upload-input i {
+            font-size: 2rem;
+            color: var(--primary-light);
+            margin-bottom: 10px;
+        }
+
+        .file-upload-input p {
+            color: var(--medium-text);
+            font-size: 0.9rem;
+        }
+
+        .file-upload-input strong {
+            color: var(--primary-color);
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            background-color: #f1f3fa;
+            padding: 10px 15px;
+            border-radius: var(--border-radius);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .file-info i {
+            color: var(--primary-color);
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .file-info span {
+            flex-grow: 1;
+            font-size: 0.9rem;
+        }
+
+        .file-info button {
+            background-color: var(--danger-color);
+            padding: 5px 10px;
+            font-size: 0.8rem;
+            box-shadow: none;
+        }
+
+        .file-info button:hover {
+            background-color: #dc3545;
+        }
+
+        .radio-group {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-top: 10px;
+        }
+
+        .radio-container {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .radio-container input[type="radio"] {
+            width: auto;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        #experienceDetails {
+            animation: fadeIn 0.5s ease;
+            background-color: #f9f9fb;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+            border-left: 4px solid var(--primary-light);
+        }
+
+        .success-message {
+            text-align: center;
+            padding: 40px 30px;
+            background-color: #f1f9f5;
+            border-radius: var(--border-radius);
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .success-message i {
+            font-size: 5rem;
+            color: var(--success-color);
+            margin-bottom: 20px;
+            animation: bounceIn 1s ease;
+        }
+
+        .success-message h2 {
+            color: var(--success-color);
+            margin-bottom: 15px;
+            margin-left: 22%;
+        }
+
+        .success-message p {
+            color: var(--medium-text);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .success-message .reference {
+            background-color: white;
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            display: inline-block;
+            margin-top: 10px;
+            box-shadow: var(--shadow);
+            animation: fadeIn 1s ease 0.5s both;
+        }
+
+        .success-message .reference strong {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        .hidden-fields {
+            display: none;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from { 
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Tooltip styles */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: var(--border-radius);
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s, visibility 0.3s;
+            font-size: 0.8rem;
+        }
+
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #333 transparent transparent transparent;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                margin: 15px auto;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .step {
+                padding: 20px;
+            }
+
+            .step h2 {
+                font-size: 1.5rem;
+            }
+
+            .job-cards, .location-selector {
+                flex-direction: column;
+            }
+
+            .card, .location-option {
+                width: 100%;
+                flex: none;
+            }
+
+            .buttons {
+                flex-direction: column-reverse;
+                gap: 15px;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .step-text {
+                display: none;
+            }
+
+            .radio-group {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .step h2 {
+                font-size: 1.3rem;
+            }
+
+            .progress-container {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>APPLICATION FORM</h1>
+        </div>
+        
+        <!-- Progress Tracker -->
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+            <div class="step-item active" data-step="1">
+                <div class="step-icon"><i class="fas fa-briefcase"></i></div>
+                <div class="step-text">Job Type</div>
+            </div>
+            <div class="step-item" data-step="2">
+                <div class="step-icon"><i class="fas fa-map-marker-alt"></i></div>
+                <div class="step-text">Location</div>
+            </div>
+            <div class="step-item" data-step="3">
+                <div class="step-icon"><i class="fas fa-user"></i></div>
+                <div class="step-text">Personal Info</div>
+            </div>
+            <div class="step-item" data-step="4">
+                <div class="step-icon"><i class="fas fa-file-alt"></i></div>
+                <div class="step-text">Documents</div>
+            </div>
+            <div class="step-item" data-step="5">
+                <div class="step-icon"><i class="fas fa-history"></i></div>
+                <div class="step-text">Work History</div>
+            </div>
+        </div>
+        
+        <!-- Step 1: Job Type Selection -->
+        <div class="step active" id="step1">
+            <h2><i class="fas fa-briefcase"></i> Select Job Type</h2>
+            <div class="job-cards">
+                <div class="card" data-type="Fresher">
+                    <i class="fas fa-user-graduate"></i>
+                    <h3>Fresher</h3>
+                    <p>0-1 years of experience</p>
+                </div>
+                <div class="card" data-type="Associate">
+                    <i class="fas fa-users"></i>
+                    <h3>Associate</h3>
+                    <p>1-3 years of experience</p>
+                </div>
+                <div class="card" data-type="Experienced">
+                    <i class="fas fa-star"></i>
+                    <h3>Experienced</h3>
+                    <p>3+ years of experience</p>
+                </div>
+            </div>
+            <div class="hidden-fields">
+                <input type="hidden" id="jobType" name="jobType">
+            </div>
+            <div class="buttons">
+                <div></div>
+                <button id="nextStep1" disabled><i class="fas fa-arrow-right"></i> Next</button>
+            </div>
+        </div>
+        
+        <!-- Step 2: Location Selection -->
+        <div class="step" id="step2">
+            <h2><i class="fas fa-map-marker-alt"></i> Select Preferred Location</h2>
+            <div class="location-selector">
+                <div class="location-option" data-location="Hyderabad">
+                    <i class="fas fa-city"></i>
+                    <h3>Hyderabad</h3>
+                </div>
+                <div class="location-option" data-location="Pune">
+                    <i class="fas fa-building"></i>
+                    <h3>Pune</h3>
+                </div>
+                <div class="location-option" data-location="Bangalore">
+                    <i class="fas fa-landmark"></i>
+                    <h3>Bangalore</h3>
+                </div>
+            </div>
+            <div class="hidden-fields">
+                <input type="hidden" id="location" name="location">
+            </div>
+            <div class="buttons">
+                <button class="back" id="backStep2"><i class="fas fa-arrow-left"></i> Back</button>
+                <button id="nextStep2" disabled><i class="fas fa-arrow-right"></i> Next</button>
+            </div>
+        </div>
+        
+        <!-- Step 3: Personal Details -->
+        <div class="step" id="step3">
+            <h2><i class="fas fa-user"></i> Personal Details</h2>
+            <div class="form-group">
+                <label for="name">Full Name *</label>
+                <input type="text" id="name" name="name" required minlength="5" maxlength="50" placeholder="Enter your full name">
+                <i class="fas fa-user"></i>
+                <div class="error-message" id="nameError">Name must contain at least 5 alphabetical characters (only letters and single spaces allowed)</div>
+            </div>
+            <div class="form-group">
+                <label for="email">Email ID *</label>
+                <input type="email" id="email" name="email" required maxlength="50" placeholder="Enter your email address">
+                <i class="fas fa-envelope"></i>
+                <div class="error-message" id="emailError">Please enter a valid email (5-25 chars before @, only gmail.com, yahoo.com, or outlook.com, no chars after .com)</div>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number *</label>
+                <input type="tel" id="phone" name="phone" required pattern="[0-9]{10}" maxlength="10" placeholder="Enter your 10-digit phone number">
+                <i class="fas fa-phone"></i>
+                <div class="error-message" id="phoneError">Phone number must be 10 digits</div>
+            </div>
+            <div class="form-group">
+                <label for="gender">Gender *</label>
+                <select id="gender" name="gender" required>
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+                <i class="fas fa-venus-mars"></i>
+                <div class="error-message" id="genderError">Please select your gender</div>
+            </div>
+            <div class="form-group">
+                <label for="guardianName">Guardian Name *</label>
+                <input type="text" id="guardianName" name="guardianName" required minlength="5" maxlength="50" placeholder="Enter guardian's full name">
+                <i class="fas fa-user-shield"></i>
+                <div class="error-message" id="guardianNameError">Guardian name must contain at least 5 alphabetical characters (only letters and single spaces allowed)</div>
+            </div>
+            <div class="form-group">
+                <label for="guardianPhone">Guardian Phone Number *</label>
+                <input type="tel" id="guardianPhone" name="guardianPhone" required pattern="[0-9]{10}" maxlength="10" placeholder="Enter guardian's 10-digit phone number">
+                <i class="fas fa-phone"></i>
+                <div class="error-message" id="guardianPhoneError">Guardian phone number must be 10 digits</div>
+            </div>
+            <div class="buttons">
+                <button class="back" id="backStep3"><i class="fas fa-arrow-left"></i> Back</button>
+                <button id="nextStep3"><i class="fas fa-arrow-right"></i> Next</button>
+            </div>
+        </div>
+        
+        <!-- Step 4: Document Upload -->
+        <div class="step" id="step4">
+            <h2><i class="fas fa-file-alt"></i> Document Upload</h2>
+            <div class="file-upload">
+                <label for="sscCertificate">SSC Certificate *</label>
+                <div class="file-upload-input">
+                    <i class="fas fa-file-upload"></i>
+                    <p>Drag & drop or <strong>Click to browse</strong></p>
+                    <p>Supported formats: PDF, JPG, PNG</p>
+                    <input type="file" id="sscCertificate" name="sscCertificate" accept=".pdf,.jpg,.png" required>
+                </div>
+                <div class="file-info" id="sscCertificateFileInfo" style="display: none;">
+                    <i class="fas fa-file-pdf"></i>
+                    <span></span>
+                    <button class="remove-file" data-file="sscCertificate"><i class="fas fa-times" style="color: white;"></i> Remove</button>
+                </div>
+                <div class="error-message" id="sscError">Please upload your SSC certificate (PDF, JPG, or PNG only)</div>
+            </div>
+            <div class="file-upload">
+                <label for="hscCertificate">HSC Certificate *</label>
+                <div class="file-upload-input">
+                    <i class="fas fa-file-upload"></i>
+                    <p>Drag & drop or <strong>Click to browse</strong></p>
+                    <p>Supported formats: PDF, JPG, PNG</p>
+                    <input type="file" id="hscCertificate" name="hscCertificate" accept=".pdf,.jpg,.png" required>
+                </div>
+                <div class="file-info" id="hscCertificateFileInfo" style="display: none;">
+                    <i class="fas fa-file-pdf"></i>
+                    <span></span>
+                    <button class="remove-file" data-file="hscCertificate"><i class="fas fa-times" style="color: white;"></i> Remove</button>
+                </div>
+                <div class="error-message" id="hscError">Please upload your HSC certificate (PDF, JPG, or PNG only)</div>
+            </div>
+            <div class="file-upload">
+                <label for="graduationCertificate">Graduation Certificate *</label>
+                <div class="file-upload-input">
+                    <i class="fas fa-file-upload"></i>
+                    <p>Drag & drop or <strong>Click to browse</strong></p>
+                    <p>Supported formats: PDF, JPG, PNG</p>
+                    <input type="file" id="graduationCertificate" name="graduationCertificate" accept=".pdf,.jpg,.png" required>
+                </div>
+                <div class="file-info" id="graduationCertificateFileInfo" style="display: none;">
+                    <i class="fas fa-file-pdf"></i>
+                    <span></span>
+                    <button class="remove-file" data-file="graduationCertificate"><i class="fas fa-times" style="color: white;"></i> Remove</button>
+                </div>
+                <div class="error-message" id="graduationError">Please upload your graduation certificate (PDF, JPG, or PNG only)</div>
+            </div>
+            <div class="file-upload">
+                <label for="pgCertificate">Post-Graduation Certificate (Optional)</label>
+                <div class="file-upload-input">
+                    <i class="fas fa-file-upload"></i>
+                    <p>Drag & drop or <strong>Click to browse</strong></p>
+                    <p>Supported formats: PDF, JPG, PNG</p>
+                    <input type="file" id="pgCertificate" name="pgCertificate" accept=".pdf,.jpg,.png">
+                </div>
+                <div class="file-info" id="pgCertificateFileInfo" style="display: none;">
+                    <i class="fas fa-file-pdf"></i>
+                    <span></span>
+                    <button class="remove-file" data-file="pgCertificate"><i class="fas fa-times" style="color: white;"></i> Remove</button>
+                </div>
+            </div>
+            <div class="buttons">
+                <button class="back" id="backStep4"><i class="fas fa-arrow-left"></i> Back</button>
+                <button id="nextStep4"><i class="fas fa-arrow-right"></i> Next</button>
+            </div>
+        </div>
+        
+        <!-- Step 5: Work History -->
+        <div class="step" id="step5">
+            <h2><i class="fas fa-history"></i> Work History</h2>
+            <div class="form-group">
+                <label>Do you have any previous work experience? *</label>
+                <div class="radio-group">
+                    <label class="radio-container">
+                        <input type="radio" name="hasExperience" value="yes"> Yes
+                    </label>
+                    <label class="radio-container">
+                        <input type="radio" name="hasExperience" value="no"> No
+                    </label>
+                </div>
+                <div class="error-message" id="experienceError">Please select an option</div>
+            </div>
+            
+            <div id="experienceDetails" style="display: none;">
+                <div class="form-group">
+                    <label for="companyName">Company Name *</label>
+                    <input type="text" id="companyName" name="companyName" minlength="5" maxlength="100">
+                    <div class="error-message" id="companyNameError">Company name must contain at least 5 alphabetical characters (only letters and single spaces allowed)</div>
+                </div>
+                <div class="form-group">
+                    <label for="yearsOfExperience">Years of Experience *</label>
+                    <input type="text" id="yearsOfExperience" name="yearsOfExperience" min="1" max="40">
+                    <div class="error-message" id="yearsOfExperienceError">Years of experience must be between 1 and 40 with at most one decimal place (e.g., 2.5)</div>
+                </div>
+                <div class="form-group">
+                    <label for="workLocation">Work Location *</label>
+                    <input type="text" id="workLocation" name="workLocation" minlength="3" maxlength="50">
+                    <div class="error-message" id="workLocationError">Work location must contain at least 5 alphabetical characters (spaces not counted)</div>
+                </div>
+                <div class="file-upload">
+                    <label for="relevingLetter">Relieving Letter *</label>
+                    <div class="file-upload-input">
+                        <i class="fas fa-file-upload"></i>
+                        <p>Drag & drop or <strong>Click to browse</strong></p>
+                        <p>Supported formats: PDF, JPG, PNG</p>
+                        <input type="file" id="relevingLetter" name="relevingLetter" accept=".pdf,.jpg,.png">
+                    </div>
+                    <div class="file-info" id="relevingLetterFileInfo" style="display: none;">
+                        <i class="fas fa-file-pdf"></i>
+                        <span></span>
+                        <button class="remove-file" data-file="relevingLetter"><i class="fas fa-times" style="color: white;"></i> Remove</button>
+                    </div>
+                    <div class="error-message" id="relevingLetterError">Please upload your relieving letter (PDF, JPG, or PNG only)</div>
+                </div>
+            </div>
+            
+            <div class="buttons">
+                <button class="back" id="backStep5"><i class="fas fa-arrow-left"></i> Back</button>
+                <button class="submit" id="submitBtn"><i class="fas fa-check-circle"></i> Submit Application</button>
+            </div>
+        </div>
+        
+        <!-- Success Message (Hidden initially) -->
+        <div class="step" id="successStep">
+            <div class="success-message">
+                <i class="fas fa-check-circle"></i>
+                <h2>Application Submitted Successfully!</h2>
+                <p>Thank you for submitting your application. Our team will review it and get back to you soon.</p>
+                <p>Your application reference number is:</p>
+                <div class="reference">
+                    <strong id="referenceNumber">APP-2025-12345</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Variables to track progress
+    let currentStep = 1;
+    const totalSteps = 5;
+    const uploadedFiles = {};
+
+    // Update progress bar
+    function updateProgressBar() {
+        const progressContainer = document.querySelector('.progress-container');
+        const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+        const progressBar = document.getElementById('progressBar');
+        progressBar.style.width = progressPercentage + '%';
+        progressBar.style.maxWidth = progressContainer.offsetWidth + 'px';
+
+        document.querySelectorAll('.step-item').forEach(function(item) {
+            const stepNumber = parseInt(item.getAttribute('data-step'));
+            if (stepNumber < currentStep) {
+                item.classList.add('completed');
+                item.classList.remove('active');
+            } else if (stepNumber === currentStep) {
+                item.classList.add('active');
+                item.classList.remove('completed');
+            } else {
+                item.classList.remove('active', 'completed');
+            }
+        });
+    }
+
+    // Show step
+    function showStep(stepNumber) {
+        document.querySelectorAll('.step').forEach(function(step) {
+            step.classList.remove('active');
+        });
+        document.getElementById('step' + stepNumber).classList.add('active');
+        currentStep = stepNumber;
+        updateProgressBar();
+    }
+
+    // Step 1: Job Type Selection
+    const jobCards = document.querySelectorAll('.card');
+    const jobTypeInput = document.getElementById('jobType');
+    const nextStep1Button = document.getElementById('nextStep1');
+
+    jobCards.forEach(function(card) {
+        card.addEventListener('click', function() {
+            jobCards.forEach(c => c.classList.remove('selected'));
+            this.classList.add('selected');
+            jobTypeInput.value = this.getAttribute('data-type');
+            nextStep1Button.removeAttribute('disabled');
+        });
+    });
+
+    nextStep1Button.addEventListener('click', function() {
+        showStep(2);
+    });
+
+    // Step 2: Location Selection
+    const locationOptions = document.querySelectorAll('.location-option');
+    const locationInput = document.getElementById('location');
+    const nextStep2Button = document.getElementById('nextStep2');
+    const backStep2Button = document.getElementById('backStep2');
+
+    locationOptions.forEach(function(option) {
+        option.addEventListener('click', function() {
+            locationOptions.forEach(o => o.classList.remove('selected'));
+            this.classList.add('selected');
+            locationInput.value = this.getAttribute('data-location');
+            nextStep2Button.removeAttribute('disabled');
+        });
+    });
+
+    nextStep2Button.addEventListener('click', function() {
+        showStep(3);
+    });
+
+    backStep2Button.addEventListener('click', function() {
+        showStep(1);
+    });
+
+    // Step 3: Personal Info Validation
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const phoneInput = document.getElementById('phone');
+    const genderSelect = document.getElementById('gender');
+    const guardianNameInput = document.getElementById('guardianName');
+    const guardianPhoneInput = document.getElementById('guardianPhone');
+    const nextStep3Button = document.getElementById('nextStep3');
+    const backStep3Button = document.getElementById('backStep3');
+
+    const samePhoneError = document.createElement('div');
+    samePhoneError.id = 'samePhoneError';
+    samePhoneError.className = 'error-message';
+    samePhoneError.textContent = 'Guardian phone number cannot be the same as your phone number';
+    guardianPhoneInput.parentNode.appendChild(samePhoneError);
+
+    function validateName(name) {
+        const trimmedName = name.trim();
+        if (trimmedName === '') return false;
+        if (!/^[a-zA-Z\s]*$/.test(trimmedName)) return false;
+        if (/\s\s/.test(trimmedName)) return false;
+        const alphaCount = trimmedName.replace(/[^a-zA-Z]/g, '').length;
+        return alphaCount >= 5;
+    }
+
+    function validateEmail(email) {
+        const trimmedEmail = email.trim();
+        if (trimmedEmail === '') return false;
+
+        // Split email into local part and domain
+        const parts = trimmedEmail.split('@');
+        if (parts.length !== 2) return false;
+        const localPart = parts[0];
+        const domain = parts[1];
+
+        // Check domain
+        const allowedDomains = ['gmail.com', 'yahoo.com', 'outlook.com'];
+        if (!allowedDomains.includes(domain)) return false;
+
+        // Check local part length (5 to 35 characters)
+        if (localPart.length < 5 || localPart.length > 35) return false;
+
+        // Check allowed characters (alphanumeric, underscore, period)
+        if (!/^[a-zA-Z0-9_.]+$/.test(localPart)) return false;
+
+        // Check for at least 5 alphanumeric characters
+        const alphanumericCount = localPart.replace(/[^a-zA-Z0-9]/g, '').length;
+        if (alphanumericCount < 5) return false;
+
+        // Check for no consecutive special characters (._ or _. or .. or __)
+        if (/[._][._]/.test(localPart) || /\.\./.test(localPart) || /__/.test(localPart)) return false;
+
+        return true;
+    }
+
+    function validatePhone(phone) {
+        const trimmedPhone = phone.trim();
+        if (trimmedPhone === '') return false;
+        return /^[6-9]\d{9}$/.test(trimmedPhone);
+    }
+
+    nameInput.addEventListener('keypress', function(e) {
+        const char = String.fromCharCode(e.charCode);
+        if (!/[a-zA-Z\s]/.test(char)) {
+            e.preventDefault();
+        }
+        if (char === ' ' && this.value.slice(-1) === ' ') {
+            e.preventDefault();
+        }
+    });
+
+    guardianNameInput.addEventListener('keypress', function(e) {
+        const char = String.fromCharCode(e.charCode);
+        if (!/[a-zA-Z\s]/.test(char)) {
+            e.preventDefault();
+        }
+        if (char === ' ' && this.value.slice(-1) === ' ') {
+            e.preventDefault();
+        }
+    });
+
+    phoneInput.addEventListener('keypress', function(e) {
+        const char = String.fromCharCode(e.charCode);
+        if (!/\d/.test(char) || this.value.length >= 10) {
+            e.preventDefault();
+        }
+    });
+
+    guardianPhoneInput.addEventListener('keypress', function(e) {
+        const char = String.fromCharCode(e.charCode);
+        if (!/\d/.test(char) || this.value.length >= 10) {
+            e.preventDefault();
+        }
+    });
+
+    nameInput.addEventListener('input', function() {
+        const trimmedValue = this.value.trim();
+        if (validateName(trimmedValue)) {
+            this.classList.remove('invalid');
+            document.getElementById('nameError').classList.remove('visible');
+        } else {
+            this.classList.add('invalid');
+            document.getElementById('nameError').classList.add('visible');
+        }
+    });
+
+    nameInput.addEventListener('blur', function() {
+        this.value = this.value.trim();
+    });
+
+    emailInput.addEventListener('input', function() {
+        const value = this.value;
+        const atIndex = value.indexOf('@');
+        if (atIndex !== -1 && atIndex > 35) {
+            this.value = value.substring(0, 35) + value.substring(atIndex);
+        }
+        if (validateEmail(this.value)) {
+            this.classList.remove('invalid');
+            document.getElementById('emailError').classList.remove('visible');
+        } else {
+            this.classList.add('invalid');
+            document.getElementById('emailError').classList.add('visible');
+        }
+    });
+
+    emailInput.addEventListener('keypress', function(e) {
+        const char = String.fromCharCode(e.charCode || e.keyCode);
+        const currentValue = this.value;
+        const atIndex = currentValue.indexOf('@');
+        const cursorPos = this.selectionStart;
+
+        // Before @ (local part)
+        if (atIndex === -1 || cursorPos <= atIndex) {
+            // Allow only alphanumeric, underscore, period, and @
+            if (!/[a-zA-Z0-9_.@]/.test(char)) {
+                e.preventDefault();
+                return;
+            }
+
+            // Prevent @ if already present or local part is too long
+            if (char === '@') {
+                if (atIndex !== -1 || currentValue.length < 5 || currentValue.length >= 35) {
+                    e.preventDefault();
+                }
+                return;
+            }
+
+            // Prevent consecutive special characters
+            if ((char === '.' || char === '_') && cursorPos > 0) {
+                const prevChar = currentValue[cursorPos - 1];
+                if (prevChar === '.' || prevChar === '_') {
+                    e.preventDefault();
+                    return;
+                }
+            }
+
+            // Prevent consecutive identical special characters
+            if (char === '.' && currentValue.slice(cursorPos - 1, cursorPos) === '.') {
+                e.preventDefault();
+                return;
+            }
+            if (char === '_' && currentValue.slice(cursorPos - 1, cursorPos) === '_') {
+                e.preventDefault();
+                return;
+            }
+
+            // Prevent local part from exceeding 35 characters
+            if (atIndex === -1 && currentValue.length >= 35) {
+                e.preventDefault();
+                return;
+            }
+        }
+
+        // After @ (domain part)
+        if (atIndex !== -1 && cursorPos > atIndex) {
+            const afterAt = currentValue.substring(atIndex + 1);
+            const allowedDomains = ['gmail.com', 'yahoo.com', 'outlook.com'];
+            let isValidContinuation = false;
+
+            for (let domain of allowedDomains) {
+                if ((afterAt + char).startsWith(domain.substring(0, afterAt.length + 1))) {
+                    isValidContinuation = true;
+                    break;
+                }
+            }
+
+            if (!isValidContinuation || afterAt.includes('.com')) {
+                e.preventDefault();
+            }
+        }
+    });
+
+    emailInput.addEventListener('blur', function() {
+        this.value = this.value.trim();
+        if (!validateEmail(this.value)) {
+            this.classList.add('invalid');
+            document.getElementById('emailError').classList.add('visible');
+        } else {
+            this.classList.remove('invalid');
+            document.getElementById('emailError').classList.remove('visible');
+        }
+    });
+
+    phoneInput.addEventListener('input', function() {
+        if (validatePhone(this.value)) {
+            this.classList.remove('invalid');
+            document.getElementById('phoneError').classList.remove('visible');
+        } else {
+            this.classList.add('invalid');
+            document.getElementById('phoneError').classList.add('visible');
+        }
+        if (guardianPhoneInput.value && this.value === guardianPhoneInput.value) {
+            document.getElementById('samePhoneError').classList.add('visible');
+            guardianPhoneInput.classList.add('invalid');
+        } else {
+            document.getElementById('samePhoneError').classList.remove('visible');
+        }
+    });
+
+    genderSelect.addEventListener('change', function() {
+        if (this.value) {
+            document.getElementById('genderError').classList.remove('visible');
+        } else {
+            document.getElementById('genderError').classList.add('visible');
+        }
+    });
+
+    guardianNameInput.addEventListener('input', function() {
+        const trimmedValue = this.value.trim();
+        if (validateName(trimmedValue)) {
+            this.classList.remove('invalid');
+            document.getElementById('guardianNameError').classList.remove('visible');
+        } else {
+            this.classList.add('invalid');
+            document.getElementById('guardianNameError').classList.add('visible');
+        }
+    });
+
+    guardianNameInput.addEventListener('blur', function() {
+        this.value = this.value.trim();
+    });
+
+    guardianPhoneInput.addEventListener('input', function() {
+        if (validatePhone(this.value)) {
+            this.classList.remove('invalid');
+            document.getElementById('guardianPhoneError').classList.remove('visible');
+        } else {
+            this.classList.add('invalid');
+            document.getElementById('guardianPhoneError').classList.add('visible');
+        }
+        if (phoneInput.value && this.value === phoneInput.value) {
+            document.getElementById('samePhoneError').classList.add('visible');
+            this.classList.add('invalid');
+        } else {
+            document.getElementById('samePhoneError').classList.remove('visible');
+        }
+    });
+
+    nextStep3Button.addEventListener('click', function() {
+        let isValid = true;
+        nameInput.value = nameInput.value.trim();
+        emailInput.value = emailInput.value.trim();
+        guardianNameInput.value = guardianNameInput.value.trim();
+
+        if (!validateName(nameInput.value)) {
+            nameInput.classList.add('invalid');
+            document.getElementById('nameError').classList.add('visible');
+            isValid = false;
+        }
+
+        if (!validateEmail(emailInput.value)) {
+            emailInput.classList.add('invalid');
+            document.getElementById('emailError').classList.add('visible');
+            isValid = false;
+        }
+
+        if (!validatePhone(phoneInput.value)) {
+            phoneInput.classList.add('invalid');
+            document.getElementById('phoneError').classList.add('visible');
+            isValid = false;
+        }
+
+        if (!genderSelect.value) {
+            document.getElementById('genderError').classList.add('visible');
+            isValid = false;
+        }
+
+        if (!validateName(guardianNameInput.value)) {
+            guardianNameInput.classList.add('invalid');
+            document.getElementById('guardianNameError').classList.add('visible');
+            isValid = false;
+        }
+
+        if (!validatePhone(guardianPhoneInput.value)) {
+            guardianPhoneInput.classList.add('invalid');
+            document.getElementById('guardianPhoneError').classList.add('visible');
+            isValid = false;
+        }
+
+        if (phoneInput.value === guardianPhoneInput.value) {
+            document.getElementById('samePhoneError').classList.add('visible');
+            guardianPhoneInput.classList.add('invalid');
+            isValid = false;
+        }
+
+        if (isValid) {
+            showStep(4);
+        }
+    });
+
+    backStep3Button.addEventListener('click', function() {
+        showStep(2);
+    });
+
+    // Step 4: Document Upload
+    const fileInputs = document.querySelectorAll('input[type="file"]');
+    const nextStep4Button = document.getElementById('nextStep4');
+    const backStep4Button = document.getElementById('backStep4');
+
+    fileInputs.forEach(function(input) {
+        input.setAttribute('accept', '.pdf,.jpg,.png');
+        input.addEventListener('change', function(e) {
+            if (this.files && this.files[0]) {
+                const file = this.files[0];
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+                const allowedExtensions = ['pdf', 'jpg', 'png'];
+
+                if (!allowedExtensions.includes(fileExtension)) {
+                    alert('Only PDF, JPG, and PNG files are allowed.');
+                    this.value = '';
+                    return;
+                }
+
+                // Read file as Data URL
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadedFiles[input.id] = {
+                        name: file.name,
+                        type: file.type,
+                        data: e.target.result
+                    };
+                    const fileInfo = document.getElementById(input.id + 'FileInfo');
+                    if (fileInfo) {
+                        fileInfo.querySelector('span').textContent = file.name;
+                        fileInfo.style.display = 'flex';
+                        const errorId = input.id.includes('ssc') ? 'sscError' :
+                                      input.id.includes('hsc') ? 'hscError' :
+                                      input.id.includes('graduation') ? 'graduationError' :
+                                      input.id.includes('releving') ? 'relevingLetterError' : '';
+                        if (errorId) {
+                            document.getElementById(errorId).classList.remove('visible');
+                        }
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    });
+
+    document.querySelectorAll('.remove-file').forEach(function(button) {
+        button.addEventListener('click', function() {
+            const fileId = this.getAttribute('data-file');
+            const fileInput = document.getElementById(fileId);
+            fileInput.value = '';
+            document.getElementById(fileId + 'FileInfo').style.display = 'none';
+            delete uploadedFiles[fileId];
+        });
+    });
+
+    nextStep4Button.addEventListener('click', function() {
+        let isValid = true;
+
+        if (!uploadedFiles['sscCertificate']) {
+            document.getElementById('sscError').classList.add('visible');
+            isValid = false;
+        }
+
+        if (!uploadedFiles['hscCertificate']) {
+            document.getElementById('hscError').classList.add('visible');
+            isValid = false;
+        }
+
+        if (!uploadedFiles['graduationCertificate']) {
+            document.getElementById('graduationError').classList.add('visible');
+            isValid = false;
+        }
+
+        if (isValid) {
+            showStep(5);
+        }
+    });
+
+    backStep4Button.addEventListener('click', function() {
+        showStep(3);
+    });
+
+    // Step 5: Work History
+    const hasExperienceRadios = document.querySelectorAll('input[name="hasExperience"]');
+    const experienceDetails = document.getElementById('experienceDetails');
+    const companyNameInput = document.getElementById('companyName');
+    const yearsOfExperienceInput = document.getElementById('yearsOfExperience');
+    const workLocationInput = document.getElementById('workLocation');
+    const relevingLetterInput = document.getElementById('relevingLetter');
+    const backStep5Button = document.getElementById('backStep5');
+    const submitBtn = document.getElementById('submitBtn');
+
+    companyNameInput.addEventListener('keypress', function(e) {
+        const char = String.fromCharCode(e.charCode);
+        if (!/[a-zA-Z\s]/.test(char)) {
+            e.preventDefault();
+        }
+        if (char === ' ' && this.value.slice(-1) === ' ') {
+            e.preventDefault();
+        }
+    });
+
+    yearsOfExperienceInput.addEventListener('keypress', function(e) {
+        const char = String.fromCharCode(e.charCode || e.keyCode);
+        const currentValue = this.value;
+        const decimalIndex = currentValue.indexOf('.');
+
+        // Allow digits, a single decimal point, and prevent invalid input
+        if (!/[0-9.]/.test(char)) {
+            e.preventDefault();
+            return;
+        }
+
+        // Prevent multiple decimal points
+        if (char === '.' && decimalIndex !== -1) {
+            e.preventDefault();
+            return;
+        }
+
+        // Prevent more than one digit after decimal
+        if (decimalIndex !== -1 && currentValue.split('.')[1]?.length >= 1 && char !== '.') {
+            e.preventDefault();
+            return;
+        }
+
+        // Prevent numbers that would exceed 40
+        const newValue = currentValue + char;
+        const numValue = parseFloat(newValue);
+        if (numValue < 0 || numValue > 40) {
+            e.preventDefault();
+            return;
+        }
+
+        // Prevent leading zeros unless followed by a decimal point
+        if (currentValue === '' && char === '0' && newValue !== '0.') {
+            e.preventDefault();
+            return;
+        }
+    });
+
+    yearsOfExperienceInput.addEventListener('input', function() {
+        let value = this.value.trim();
+        // Remove any invalid characters
+        value = value.replace(/[^0-9.]/g, '');
+
+        // Ensure only one decimal point
+        const parts = value.split('.');
+        if (parts.length > 2) {
+            value = parts[0] + '.' + parts[1];
+        }
+
+        // Limit to one digit after decimal
+        if (parts[1] && parts[1].length > 1) {
+            value = parts[0] + '.' + parts[1][0];
+        }
+
+        this.value = value;
+
+        // Validate the input
+        const numValue = parseFloat(value);
+        const isValidFormat = /^[0-9]+(\.[0-9])?$/.test(value);
+        const isWithinRange = !isNaN(numValue) && numValue >= 1 && numValue <= 40;
+
+        if (value === '' || !isValidFormat || !isWithinRange) {
+            this.classList.add('invalid');
+            document.getElementById('yearsOfExperienceError').classList.add('visible');
+        } else {
+            this.classList.remove('invalid');
+            document.getElementById('yearsOfExperienceError').classList.remove('visible');
+        }
+    });
+
+    yearsOfExperienceInput.addEventListener('blur', function() {
+        if (this.value) {
+            // Trim trailing decimal point
+            this.value = parseFloat(this.value).toFixed(1).replace(/\.0$/, '');
+        }
+    });
+
+    workLocationInput.addEventListener('keypress', function(e) {
+        const char = String.fromCharCode(e.charCode);
+        if (!/[a-zA-Z\s\-'.]/.test(char)) {
+            e.preventDefault();
+        }
+        if (char === ' ' && this.value.slice(-1) === ' ') {
+            e.preventDefault();
+        }
+    });
+
+    workLocationInput.addEventListener('input', function() {
+        const trimmedValue = this.value.trim();
+        const alphaCount = trimmedValue.replace(/[^a-zA-Z]/g, '').length;
+        if (alphaCount >= 5 && !/\s\s/.test(trimmedValue)) {
+            this.classList.remove('invalid');
+            document.getElementById('workLocationError').classList.remove('visible');
+        } else {
+            this.classList.add('invalid');
+            document.getElementById('workLocationError').classList.add('visible');
+        }
+    });
+
+    workLocationInput.addEventListener('blur', function() {
+        this.value = this.value.trim();
+    });
+
+    hasExperienceRadios.forEach(function(radio) {
+        radio.addEventListener('change', function() {
+            document.getElementById('experienceError').classList.remove('visible');
+            if (this.value === 'yes') {
+                experienceDetails.style.display = 'block';
+                companyNameInput.setAttribute('required', 'required');
+                yearsOfExperienceInput.setAttribute('required', 'required');
+                workLocationInput.setAttribute('required', 'required');
+                relevingLetterInput.setAttribute('required', 'required');
+            } else {
+                experienceDetails.style.display = 'none';
+                companyNameInput.removeAttribute('required');
+                yearsOfExperienceInput.removeAttribute('required');
+                workLocationInput.removeAttribute('required');
+                relevingLetterInput.removeAttribute('required');
+            }
+        });
+    });
+
+    companyNameInput.addEventListener('input', function() {
+        const trimmedValue = this.value.trim();
+        const isValid = /^[a-zA-Z\s]*$/.test(trimmedValue) &&
+                        !/\s\s/.test(trimmedValue) &&
+                        trimmedValue.replace(/[^a-zA-Z]/g, '').length >= 5;
+        if (isValid) {
+            this.classList.remove('invalid');
+            document.getElementById('companyNameError').classList.remove('visible');
+        } else {
+            this.classList.add('invalid');
+            document.getElementById('companyNameError').classList.add('visible');
+        }
+    });
+
+    companyNameInput.addEventListener('blur', function() {
+        this.value = this.value.trim();
+    });
+
+    relevingLetterInput.addEventListener('change', function(e) {
+        if (this.files && this.files[0]) {
+            const file = this.files[0];
+            const fileExtension = file.name.split('.').pop().toLowerCase();
+            const allowedExtensions = ['pdf', 'jpg', 'png'];
+
+            if (!allowedExtensions.includes(fileExtension)) {
+                alert('Only PDF, JPG, and PNG files are allowed.');
+                this.value = '';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                uploadedFiles['relevingLetter'] = {
+                    name: file.name,
+                    type: file.type,
+                    data: e.target.result
+                };
+                const fileInfo = document.getElementById('relevingLetterFileInfo');
+                fileInfo.querySelector('span').textContent = file.name;
+                fileInfo.style.display = 'flex';
+                document.getElementById('relevingLetterError').classList.remove('visible');
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    submitBtn.addEventListener('click', async function(e) {
+        e.preventDefault();
+        let isValid = true;
+
+        if (companyNameInput.value) companyNameInput.value = companyNameInput.value.trim();
+        if (workLocationInput.value) workLocationInput.value = workLocationInput.value.trim();
+
+        const hasExperience = document.querySelector('input[name="hasExperience"]:checked');
+        if (!hasExperience) {
+            document.getElementById('experienceError').classList.add('visible');
+            isValid = false;
+        } else if (hasExperience.value === 'yes') {
+            const isValidCompany = /^[a-zA-Z\s]*$/.test(companyNameInput.value) &&
+                                  !/\s\s/.test(companyNameInput.value) &&
+                                  companyNameInput.value.replace(/[^a-zA-Z]/g, '').length >= 5;
+            if (!isValidCompany) {
+                companyNameInput.classList.add('invalid');
+                document.getElementById('companyNameError').classList.add('visible');
+                isValid = false;
+            }
+
+            const years = parseFloat(yearsOfExperienceInput.value);
+            const isValidYearsFormat = /^[0-9]+(\.[0-9])?$/.test(yearsOfExperienceInput.value);
+            if (isNaN(years) || years < 1 || years > 40 || !isValidYearsFormat) {
+                yearsOfExperienceInput.classList.add('invalid');
+                document.getElementById('yearsOfExperienceError').classList.add('visible');
+                isValid = false;
+            }
+
+            const alphaCountLocation = workLocationInput.value.replace(/[^a-zA-Z]/g, '').length;
+            if (alphaCountLocation < 5 || /\s\s/.test(workLocationInput.value)) {
+                workLocationInput.classList.add('invalid');
+                document.getElementById('workLocationError').classList.add('visible');
+                isValid = false;
+            }
+
+            if (!uploadedFiles['relevingLetter']) {
+                document.getElementById('relevingLetterError').classList.add('visible');
+                isValid = false;
+            }
+        }
+
+        if (isValid) {
+            const confirmSubmit = confirm("Are you sure you want to submit the application?");
+            if (confirmSubmit) {
+                const random = Math.floor(10000 + Math.random() * 90000);
+                const today = new Date();
+                const referenceNumber = `APP-${today.getFullYear()}-${random}`;
+
+                // Structure applicationData to match backend expectations
+                const applicationData = {
+                    refNo: referenceNumber,
+                    name: nameInput.value,
+                    email: emailInput.value,
+                    phone: phoneInput.value,
+                    gender: genderSelect.value,
+                    guardianName: guardianNameInput.value,
+                    guardianPhone: guardianPhoneInput.value,
+                    jobType: jobTypeInput.value,
+                    location: locationInput.value,
+                    status: "New",
+                    hasExperience: hasExperience.value,
+                    companyName: hasExperience.value === "yes" ? companyNameInput.value : null,
+                    yearsOfExperience: hasExperience.value === "yes" ? yearsOfExperienceInput.value : null,
+                    workLocation: hasExperience.value === "yes" ? workLocationInput.value : null,
+                    documents: {
+                        sscCertificate: uploadedFiles['sscCertificate'] || null,
+                        hscCertificate: uploadedFiles['hscCertificate'] || null,
+                        graduationCertificate: uploadedFiles['graduationCertificate'] || null,
+                        pgCertificate: uploadedFiles['pgCertificate'] || null,
+                        relevingLetter: hasExperience.value === "yes" ? uploadedFiles['relevingLetter'] || null : null
+                    }
+                };
+
+                try {
+                    // Check for duplicates before saving
+                    const isDuplicate = await checkForDuplicates(applicationData.email, applicationData.phone);
+                    if (isDuplicate) {
+                        alert('An application with this email or phone number already exists. Please use a different email or phone number.');
+                        return;
+                    }
+
+                    // Save application
+                    const response = await saveApplicationData(applicationData);
+
+                    // Show success step
+                    document.getElementById('referenceNumber').textContent = referenceNumber;
+                    document.querySelectorAll('.step').forEach(function(step) {
+                        step.classList.remove('active');
+                    });
+                    document.getElementById('successStep').classList.add('active');
+                    currentStep = totalSteps + 1;
+                    updateProgressBar();
+                } catch (err) {
+                    alert(`Error: ${err.message}`);
+                }
+            }
+        }
+    });
+
+    // Function to check for duplicate email or phone number
+    async function checkForDuplicates(email, phone) {
+        try {
+            const response = await fetch('http://localhost:3000/api/check-duplicate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, phone })
+            });
+            if (!response.ok) {
+                throw new Error(`Failed to check duplicates: ${response.statusText}`);
+            }
+            const data = await response.json();
+            return data.isDuplicate;
+        } catch (err) {
+            console.error('Error checking duplicates:', err);
+            throw new Error('Unable to verify duplicate application. Please try again.');
+        }
+    }
+
+    // Function to save application data
+    async function saveApplicationData(data) {
+        try {
+            const response = await fetch('http://localhost:3000/api/applications', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to save application');
+            }
+            const result = await response.json();
+            console.log(`Application saved with refNo ${result.refNo}`);
+            return result;
+        } catch (err) {
+            console.error('Error saving application:', err);
+            throw err;
+        }
+    }
+
+    backStep5Button.addEventListener('click', function() {
+        showStep(4);
+    });
+
+    updateProgressBar();
+});
+</script>
+</body>
+</html>
