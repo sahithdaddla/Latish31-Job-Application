@@ -1,0 +1,67 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:14
+    container_name: latish-postgres
+    environment:
+      POSTGRES_DB: job_application_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin123
+    ports:
+      - "5477:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql 
+    networks:
+      - jobapp-net
+
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    container_name: latish-backend
+    ports:
+      - "3047:3047"
+    depends_on:
+      - postgres
+    networks:
+      - jobapp-net
+
+  employee-form:
+    build:
+      context: ./Employee_Formfilling
+      dockerfile: Dockerfile
+    container_name: latish-employee-form
+    ports:
+      - "8204:80"
+    networks:
+      - jobapp-net
+
+  hr-form:
+    build:
+      context: ./HR_FormFilling
+      dockerfile: Dockerfile
+    container_name: latish-hr-form
+    ports:
+      - "8205:80"
+    networks:
+      - jobapp-net
+
+  welcome-page:
+    build:
+      context: ./Welcome-Page
+      dockerfile: Dockerfile
+    container_name: latish-welcome-page
+    ports:
+      - "8206:80"
+    networks:
+      - jobapp-net
+
+volumes:
+  pgdata:
+
+networks:
+  jobapp-net:
+    driver: bridge
+
